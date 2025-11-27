@@ -211,7 +211,7 @@ app.get("/", (req, res) => {
     res.redirect("/login.html");
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ;
 
 initDb().then(() => {
     app.get("/health", (req, res) => res.status(200).send("OK"));
