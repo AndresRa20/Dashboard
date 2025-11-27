@@ -80,7 +80,7 @@ const pool = mysql.createPool({
 });
 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_jwt_desarrollo';
+const JWT_SECRET = process.env.JWT_SECRET || 'cifrado_secreto_para_jwt';
 
 // Middleware para verificar JWT
 function verifyToken(req, res, next) {
@@ -214,5 +214,6 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 initDb().then(() => {
+    app.get("/health", (req, res) => res.status(200).send("OK"));
     app.listen(PORT, () => console.log(`Server corriendo en puerto ${PORT}`));
 });
