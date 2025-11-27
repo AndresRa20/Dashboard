@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!--
+        Inicio.html
+        Página principal (dashboard) protegida por `Scripts/auth-guard.js`.
+        Solo accesible si existe un JWT válido en localStorage.
+    -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Académico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/Style.css" />
+</head>
+<body>
+    <!-- Proteger acceso con JWT -->
+    <script src="../Scripts/auth-guard.js"></script>
+
+    <nav class="navbar navbar-dark bg-dark d-flex justify-content-between">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                <span class="navbar-toggler-icon"></span>
+        </div>
+    </nav>
+
+    <div class="collapse" id="sidebarMenu">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <p>Universidad Latina de Costa Rica</p>
+            <hr class="linea"/>
+            
+            <ul class="sidebar-list">
+                <li data-area="Dashboard">Dashboard</li>
+                <li data-area="Calificaciones">Calificaciones</li>
+                <li data-area="Administracion">Administración</li>
+                <li data-area="Derecho">Derecho</li>
+                <li data-area="Medicina">Medicina</li>
+                <li data-area="Ciencias Biologicas">Ciencias Biológicas</li>
+                <li data-area="Farmacia">Farmacia</li>
+                <li data-area="Nutricion">Nutrición</li>
+                <li data-area="Optometria">Optometría</li>
+                <li data-area="Trabajo Social">Trabajo Social</li>
+                <button id="btn-actualizar" class="boton-actualizar">Actualizar</button>
+            </ul>
+        </div>
+    </div>
+
+    <main class="contenido">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1 id="titulo-ventana">Hola bienvenido al Dashboard</h1>
+            
+        </header>
+        <section>
+            <iframe class="iframe-grafica" allowfullscreen></iframe>
+        </section>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../Scripts/navegar.js"></script>
+    <script src="/Scripts/actualizar.js"></script>
+</body>
+</html>

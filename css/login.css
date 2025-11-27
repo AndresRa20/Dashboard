@@ -1,0 +1,203 @@
+/* 
+
+AJUSTES GLOBALES Y FONDO
+*/
+
+body {
+    /* Fondo: Imagen (url), tamaño (cover) y color de respaldo (rgb(0, 11, 61)). */
+    background-image: url('images/FondoLogin.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: rgb(0, 11, 61); 
+    
+    /* Fuente: Times New Roman solicitada. */
+    font-family: 'Times New Roman', serif;
+    
+    /* Layout: Centrado con Flexbox. */
+    display: flex; /* display es una propiedad de CSS [6]. */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: white; 
+}
+
+/* 
+
+ESTRUCTURA 3D Y ANIMACIÓN (CARD FLIP)
+
+*/
+
+/* Contenedor principal 3D: establece la perspectiva. */
+.flip-container {
+    width: 100%;
+    max-width: 380px;
+    height: 550px; 
+    perspective: 1000px; /* perspective es una propiedad de CSS [7]. */
+}
+
+/* Elemento 'card': La carta que rota. */
+.card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+    /* Fondo: Semi-transparencia (90% opacidad) y color oscuro (rgb(34, 34, 34)). */
+    background-color: rgba(34, 34, 34, 0.9);
+    
+    padding: 40px;
+    border-radius: 12px; /* Ligeramente más redondeado para mejor estética. */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8); /* box-shadow mejorada para un look más profundo [4]. */
+    
+    transition: transform 0.8s; /* transition define la suavidad de la animación [3]. */
+    transform-style: preserve-3d; /* transform-style es una propiedad de CSS [3]. */
+    
+    color: white; 
+}
+
+/* Rotación aplicada por login.js */
+.flip-container.flipped .card {
+    transform: rotateY(180deg); /* transform es una propiedad de CSS [3]. */
+}
+
+/* Estilos de las Caras (Frontal y Trasera) */
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    backface-visibility: hidden; /* backface-visibility es una propiedad de CSS [8]. */
+    padding: 40px;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+/* Posición inicial de las caras */
+.card-front {
+    transform: rotateY(0deg);
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+/* 
+
+BLOQUE 3: ELEMENTOS DEL FORMULARIO (Pulido Visual)
+
+*/
+
+.logo-ulatina {
+    max-width: 150px;
+    display: block;
+    margin: 0 auto 15px auto;
+}
+
+.card-face h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: white;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Etiquetas: Correo y Contraseña */
+.form-group label {
+    display: block;
+    margin-bottom: 8px; /* Pequeño ajuste en margen para más aire. */
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0.5px; /* Pequeño espaciado para mejor lectura. */
+}
+
+/* Estilos de Inputs (Correo, Contraseña, Texto) */
+.card-face input[type="text"],
+.card-face input[type="email"],
+.card-face input[type="password"] {
+    width: 100%;
+    padding: 14px; /* Aumento del padding para inputs más grandes. */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil. */
+    border-radius: 6px; 
+    box-sizing: border-box; 
+    
+    /* Fondo del campo de entrada oscuro y transparente. */
+    background-color: rgba(255, 255, 255, 0.05); /* Muy ligero. */
+    color: white; /* Texto escrito en color blanco. */
+    
+    /* Transición para el enfoque. */
+    transition: all 0.3s ease-in-out; /* transition es una propiedad de CSS [3]. */
+}
+
+/* Efecto de ENFOQUE (Focus): Se utiliza para darle un aspecto "lindo" e interactivo. */
+.card-face input[type="text"]:focus,
+.card-face input[type="email"]:focus,
+.card-face input[type="password"]:focus {
+    outline: none; /* Elimina el feo borde de enfoque predeterminado. */
+    border-color: #00bcd4; /* Borde del color de acento. */
+    /* box-shadow añade un sutil "glow" azul. */
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.6); 
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos del Botón de Enviar (submit) */
+.card-face button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #086dc0; /* Color azul corporativo [5]. */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.card-face button[type="submit"]:hover {
+    background-color: #06539e;
+}
+.card-face button[type="submit"]:active {
+    transform: scale(0.99); /* Pequeño efecto de presión al hacer clic. */
+}
+
+/* 
+
+BLOQUE 4: SELECTOR DE MODO (TOGGLE BUTTON)
+
+*/
+.mode-toggle {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.mode-toggle .toggle-button {
+    width: auto;
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+    transition: color 0.3s;
+    
+    /* Colores solicitados previamente. */
+    color: #a8a8a8; /* Texto estático. */
+}
+
+.mode-toggle .toggle-button#show-register, 
+.mode-toggle .toggle-button#show-login {
+    color: #00bcd4; /* Botón de alternancia. */
+    text-decoration: underline;
+}
+
+.mode-toggle .toggle-button:hover {
+    color: white; 
+}

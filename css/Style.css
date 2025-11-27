@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: white;
+    color: #0b0c28;
+}
+.container.fluid{
+    display: flex;
+    height: 100vh;
+}
+
+/* --- SIDEBAR FIJO EN ESCRITORIO --- */
+.sidebar {
+    width: 270px;
+    background: #343a40;
+    color: white;
+    padding: 20px;
+    height: calc(100vh - 56px); /* 56px = altura de la navbar */
+    overflow-y: auto;
+    position: fixed; 
+    top: 56px;            /* Baja el sidebar debajo del menú */
+    left: 0;
+}
+
+
+.sidebarMenu {
+    padding: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 1px solid #f5f7fb;
+}
+
+.sidebar h2 {
+     margin-top: 0; 
+}
+
+
+
+.sidebar-list { 
+    list-style: none; padding: 0;
+ }
+
+.sidebar-list li {
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f5f7fb;
+    transition: 0.3s;
+}
+.linea{
+    border: none;
+    background-color: white;
+    height: 5px;
+    
+}
+.sidebar-list li:hover { 
+    color: #28a745; 
+}
+
+.sidebar-list li.active {
+    background: #606160; 
+    font-weight: bold; 
+}
+
+.contenido {
+    margin-left: 290px;     /* 🔥 Empuja el contenido para dejar espacio al menú */
+    padding: 40px;
+    transition: margin-left 0.3s ease;
+}
+.h1{
+    position: center;
+}
+.iframe-grafica {
+    width: 100%;
+    height: 500px;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .contenido { margin-left: 0; }
+    .sidebar { left: -270px; position: fixed; transition: left .3s; }
+}
