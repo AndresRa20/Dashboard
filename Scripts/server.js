@@ -120,5 +120,5 @@ const PORT = process.env.PORT || 3000;
 
 initDb().then(() => {
     app.listen(PORT,"0.0.0.0", () => 
-        console.log("Server corriendo en puerto"+ PORT));
+        console.log("Server corriendo en puerto", PORT));
 });
