@@ -119,5 +119,5 @@ app.get("/health", (req, res) => res.status(200).send("OK"));
 const PORT = process.env.PORT || 3000;
 
 initDb().then(() => {
-    app.listen(PORT, () => console.log(`Server corriendo en puerto ${PORT}`));
+    app.listen(8080, () => console.log(`Server corriendo en puerto ${PORT}`));
 });
