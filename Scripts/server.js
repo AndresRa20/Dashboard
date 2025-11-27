@@ -38,18 +38,15 @@ app.use("/Scripts", express.static(path.join(__dirname, "..", "Scripts")));
 app.use("/images", express.static(path.join(__dirname, "..", "images")));
 
 // Configuración MySQL
-// En Railway, usa variables de MySQL. Fallback a localhost para desarrollo local.
-const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST || '127.0.0.1';
-const DB_PORT = process.env.DB_PORT || process.env.MYSQLPORT || 3306;
-const DB_USER = process.env.DB_USER || process.env.MYSQLUSER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '';
-const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE || 'dashboard_db';
+const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST;
+const DB_PORT = process.env.DB_PORT || process.env.MYSQLPORT;
+const DB_USER = process.env.DB_USER || process.env.MYSQLUSER;
+const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD;
+const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE;
 
-// Debug: ver qué variables se están usando
 console.log('=== DATABASE CONFIG DEBUG ===');
-console.log('DB_HOST env:', process.env.DB_HOST);
-console.log('MYSQLHOST env:', process.env.MYSQLHOST);
-console.log('Final DB_HOST:', DB_HOST);
+console.log('DB_HOST:', DB_HOST);
+console.log('DB_PORT:', DB_PORT);
 console.log('DB_USER:', DB_USER);
 console.log('DB_NAME:', DB_NAME);
 console.log('============================');
@@ -63,8 +60,7 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelayMs: 0
+    enableKeepAlive: true
 });
 
 const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_jwt_desarrollo';
