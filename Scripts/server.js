@@ -38,19 +38,36 @@ app.use("/Scripts", express.static(path.join(__dirname, "..", "Scripts")));
 app.use("/images", express.static(path.join(__dirname, "..", "images")));
 
 // Configuración MySQL
-const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST;
-const DB_PORT = process.env.DB_PORT || process.env.MYSQLPORT;
-const DB_USER = process.env.DB_USER || process.env.MYSQLUSER;
-const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD;
-const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE;
+// Obtener MYSQL_URL desde Railway
+const MYSQL_URL = process.env.MYSQL_URL;
 
-console.log('=== DATABASE CONFIG DEBUG ===');
-console.log('DB_HOST:', DB_HOST);
-console.log('DB_PORT:', DB_PORT);
-console.log('DB_USER:', DB_USER);
-console.log('DB_NAME:', DB_NAME);
-console.log('============================');
+console.log("=== MYSQL_URL DEBUG ===");
+console.log("MYSQL_URL:", MYSQL_URL);
+console.log("=======================");
 
+// Si no existe MYSQL_URL, error inmediato
+if (!MYSQL_URL) {
+    console.error("ERROR: MYSQL_URL no está definida en Railway");
+    process.exit(1);
+}
+
+// Parsear MYSQL_URL
+const url = new URL(MYSQL_URL);
+
+const DB_HOST = url.hostname;
+const DB_PORT = url.port;
+const DB_USER = url.username;
+const DB_PASSWORD = url.password;
+const DB_NAME = url.pathname.replace("/", "");
+
+console.log("=== PARSED DB CONFIG ===");
+console.log("DB_HOST:", DB_HOST);
+console.log("DB_PORT:", DB_PORT);
+console.log("DB_USER:", DB_USER);
+console.log("DB_NAME:", DB_NAME);
+console.log("========================");
+
+// Crear pool con datos ya parseados
 const pool = mysql.createPool({
     host: DB_HOST,
     port: DB_PORT,
@@ -59,9 +76,9 @@ const pool = mysql.createPool({
     database: DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0,
-    enableKeepAlive: true
+    queueLimit: 0
 });
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_jwt_desarrollo';
 
