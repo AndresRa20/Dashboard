@@ -89,6 +89,38 @@ async function initDb() {
         process.exit(1);
     }
 }
+app.post('/api/create-admin', async (req, res) => {
+    try {
+        const name = "Admin";
+        const lastname = "Root";
+        const email = "admin@admin.com";
+        const password = "Ulatina.2025*"; // cámbiala si quieres
+
+        // verificar si ya existe
+        const [existing] = await pool.query(
+            "SELECT id FROM users WHERE email = ? LIMIT 1",
+            [email]
+        );
+        if (existing.length > 0) {
+            return res.json({ error: "El admin ya existe." });
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+
+        await pool.query(
+            `INSERT INTO users (name, lastname, email, password_hash, role, dashboard_permiso)
+             VALUES (?, ?, ?, ?, 'admin', 1)`,
+            [name, lastname, email, hash]
+        );
+
+        res.json({ ok: true, message: "Admin creado correctamente" });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error creando admin" });
+    }
+});
+
 
 // Endpoints
 app.post("/api/register", async (req, res) => {
