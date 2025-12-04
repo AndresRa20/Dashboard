@@ -108,10 +108,11 @@ app.post('/api/create-admin', async (req, res) => {
         const hash = await bcrypt.hash(password, 10);
 
         await pool.query(
-            `INSERT INTO users (name, lastname, email, password_hash, role, dashboard_permiso)
-             VALUES (?, ?, ?, ?, 'admin', 1)`,
+            `INSERT INTO users (name, lastname, email, password_hash, role)
+            VALUES (?, ?, ?, ?, 'admin')`,
             [name, lastname, email, hash]
         );
+
 
         res.json({ ok: true, message: "Admin creado correctamente" });
 
