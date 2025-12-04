@@ -93,64 +93,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // FORMULARIO DE LOGIN
-    const loginForm = document.getElementById("login-form");
+const loginForm = document.getElementById("login-form");
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-            const data = {
-                email: this.querySelector('[name="email"]').value,
-                password: this.querySelector('[name="password"]').value
-            };
+        const data = {
+            email: this.querySelector('[name="email"]').value,
+            password: this.querySelector('[name="password"]').value
+        };
 
-            try {
-                const res = await fetch(`${API_URL}/api/login`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
-                });
+        try {
+            const res = await fetch(`${API_URL}/api/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
 
-                const json = await res.json();
-                document.getElementById("login-debug").textContent =
-                    "login: status " + res.status;
+            const json = await res.json();
+            document.getElementById("login-debug").textContent =
+                "login: status " + res.status;
 
-                if (json.error) {
-                    alert("Error: " + json.error);
-                    return;
-                }
-                // Guardar el token
-                localStorage.setItem("token", json.token);
-
-                // GUARDAR EL ROL Y REDIRIGIR SI ES ADMIN
-                localStorage.setItem("role", json.role);
-
-                if (json.role === "admin") {
-                    if (origin.includes("5500")) {
-                        window.location.href = "http://127.0.0.1:3000/admin.html";
-                    } else {
-                        window.location.href = "/admin.html";
-                    }
-                    return;
-                }
-
-                // Redirección inteligente (usuarios normales)
-                const origin = window.location.origin;
-                if (origin.includes("5500")) {
-                    window.location.href = "http://127.0.0.1:3000/Inicio.html";
-                } else {
-                    window.location.href = "/Inicio.html";
-                }
-
-            } catch (err) {
-                console.error("Error fetch /api/login", err);
-                document.getElementById("login-debug").textContent =
-                    "login: error " + err.message;
-                alert("Error al conectar con el servidor.");
+            if (json.error) {
+                alert("Error: " + json.error);
+                return;
             }
-        });
-    }
+
+            // Guardar token y rol
+            localStorage.setItem("token", json.token);
+            localStorage.setItem("role", json.role);
+
+            // Detectar entorno correctamente
+            const origin = window.location.origin;
+
+            // REDIRECCIÓN PARA ADMIN
+            if (json.role === "admin") {
+                if (origin.includes("5500")) {
+                    window.location.href = "http://127.0.0.1:3000/admin.html";
+                } else {
+                    window.location.href = "/admin.html";
+                }
+                return;
+            }
+
+            // REDIRECCIÓN PARA USUARIO NORMAL
+            if (origin.includes("5500")) {
+                window.location.href = "http://127.0.0.1:3000/Inicio.html";
+            } else {
+                window.location.href = "/Inicio.html";
+            }
+
+        } catch (err) {
+            console.error("Error fetch /api/login", err);
+            document.getElementById("login-debug").textContent =
+                "login: error " + err.message;
+            alert("Error al conectar con el servidor.");
+        }
+    });
+}
 });
+
 
 // VALIDACIÓN DE REGISTRO
 function validateRegistrationForm(form) {
