@@ -42,10 +42,7 @@ ESTRUCTURA 3D Y ANIMACIÓN (CARD FLIP)
     position: relative;
     width: 100%;
     height: 100%;
-    
-    /* Fondo: Semi-transparencia (90% opacidad) y color oscuro (rgb(34, 34, 34)). */
     background-color: rgba(34, 34, 34, 0.9);
-    
     padding: 40px;
     border-radius: 12px; /* Ligeramente más redondeado para mejor estética. */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8); /* box-shadow mejorada para un look más profundo [4]. */

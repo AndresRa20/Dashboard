@@ -1,0 +1,70 @@
+ :root {
+            --green: #006c35;
+            --green-dark: #004d27;
+            --gray-bg: #f3f3f3;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--gray-bg);
+        }
+
+        header {
+            width: 100%;
+            padding: 15px;
+            background: var(--green);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 25px auto;
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background: var(--green-dark);
+            color: white;
+        }
+
+        .btn {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #b91212;
+        }
+
+        .btn-role {
+            background: var(--green);
+        }
+
+        #logout {
+            background: #333;
+            float: right;
+        }

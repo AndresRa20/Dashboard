@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(dbg);
     }
 
-    // 🔥 Detectar entorno
+    // Detectar entorno
     // Live Server = puerto 5500 → usa API local
     // Railway → API relativa "/api"
     const API_URL = window.location.origin.includes("5500")
@@ -119,14 +119,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("Error: " + json.error);
                     return;
                 }
-
                 // Guardar el token
                 localStorage.setItem("token", json.token);
 
-                // Redirección inteligente
-                const origin = window.location.origin;
+                // GUARDAR EL ROL Y REDIRIGIR SI ES ADMIN
+                localStorage.setItem("role", json.role);
 
-                // Si estás en Live Server → redirige al backend local
+                if (json.role === "admin") {
+                    if (origin.includes("5500")) {
+                        window.location.href = "http://127.0.0.1:3000/admin.html";
+                    } else {
+                        window.location.href = "/admin.html";
+                    }
+                    return;
+                }
+
+                // Redirección inteligente (usuarios normales)
+                const origin = window.location.origin;
                 if (origin.includes("5500")) {
                     window.location.href = "http://127.0.0.1:3000/Inicio.html";
                 } else {

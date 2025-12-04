@@ -46,8 +46,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'cifrado_secreto_para_jwt';
 
 // Middleware de verificación JWT
 function verifyToken(req, res, next) {
-    const token = req.headers.authorization?.split(' ')[1] || req.cookies?.token;
-    if (!token) return res.status(401).json({ error: "No autorizado" });
+    const auth = req.headers.authorization;
+    if (!auth) return res.status(401).json({ error: "No autorizado" });
+
+    const token = auth.replace("Bearer ", "");
+
     try {
         req.user = jwt.verify(token, JWT_SECRET);
         next();
@@ -56,19 +59,28 @@ function verifyToken(req, res, next) {
     }
 }
 
+function verifyAdmin(req, res, next) {
+    if (req.user.role !== "admin") {
+        return res.status(403).json({ error: "No autorizado" });
+    }
+    next();
+}
+
+
 // Inicializar BD
 async function initDb() {
     try {
         const conn = await pool.getConnection();
         await conn.query(`
-            CREATE TABLE IF NOT EXISTS users (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR(100),
-                lastname VARCHAR(100),
-                email VARCHAR(255) UNIQUE NOT NULL,
-                password_hash VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB;
+           CREATE TABLE IF NOT EXISTS users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(100),
+        lastname VARCHAR(100),
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(20) NOT NULL DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+         ) ENGINE=InnoDB;
         `);
         conn.release();
         console.log("✓ Base de datos inicializada");
@@ -88,26 +100,72 @@ app.post("/api/register", async (req, res) => {
     if (existing.length > 0) { conn.release(); return res.status(400).json({ error: "Correo ya registrado" }); }
 
     const hash = await bcrypt.hash(password, 10);
-    await conn.query("INSERT INTO users (name, lastname, email, password_hash) VALUES (?, ?, ?, ?)", [name||"", lastname||"", email, hash]);
+    await conn.query("INSERT INTO users (name, lastname, email, password_hash) VALUES (?, ?, ?, ?)", [name || "", lastname || "", email, hash]);
     conn.release();
     res.json({ ok: true, message: "Usuario registrado exitosamente" });
 });
 
 app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email y contraseña son requeridos" });
+    if (!email || !password)
+        return res.status(400).json({ error: "Email y contraseña son requeridos" });
 
     const conn = await pool.getConnection();
-    const [rows] = await conn.query("SELECT id, password_hash FROM users WHERE email = ?", [email]);
-    if (rows.length === 0) { conn.release(); return res.status(401).json({ error: "Credenciales incorrectas" }); }
+    const [rows] = await conn.query("SELECT id, password_hash, role FROM users WHERE email = ?", [email]);
+
+    if (rows.length === 0) {
+        conn.release();
+        return res.status(401).json({ error: "Credenciales incorrectas" });
+    }
 
     const valid = await bcrypt.compare(password, rows[0].password_hash);
-    if (!valid) { conn.release(); return res.status(401).json({ error: "Credenciales incorrectas" }); }
+    if (!valid) {
+        conn.release();
+        return res.status(401).json({ error: "Credenciales incorrectas" });
+    }
 
-    const token = jwt.sign({ id: rows[0].id, email }, JWT_SECRET, { expiresIn: "24h" });
+    const token = jwt.sign({
+        id: rows[0].id,
+        email,
+        role: rows[0].role
+    }, JWT_SECRET, { expiresIn: "24h" });
+
     conn.release();
-    res.json({ ok: true, token, message: "Login exitoso" });
+    res.json({ ok: true, token, role: rows[0].role });
 });
+app.get('/api/admin/users', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+        const [rows] = await pool.query(`
+            SELECT id, name, lastname, email, role 
+            FROM users
+        `);
+        res.json({ users: rows });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener usuarios" });
+    }
+});
+
+app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) => {
+    const { id, role } = req.body;
+
+    try {
+        await pool.query("UPDATE users SET role = ? WHERE id = ?", [role, id]);
+        res.json({ message: "Rol actualizado" });
+    } catch (err) {
+        res.status(500).json({ error: "Error al actualizar rol" });
+    }
+});
+app.post('/api/admin/delete-user', verifyToken, verifyAdmin, async (req, res) => {
+    const { id } = req.body;
+
+    try {
+        await pool.query("DELETE FROM users WHERE id = ?", [id]);
+        res.json({ message: "Usuario eliminado" });
+    } catch (err) {
+        res.status(500).json({ error: "Error al eliminar usuario" });
+    }
+});
+
 
 app.post("/api/logout", (req, res) => res.json({ ok: true, message: "Logout exitoso" }));
 app.get("/api/me", verifyToken, (req, res) => res.json({ ok: true, user: req.user }));
@@ -119,6 +177,6 @@ app.get("/health", (req, res) => res.status(200).send("OK"));
 const PORT = process.env.PORT || 3000;
 
 initDb().then(() => {
-    app.listen(PORT,"0.0.0.0", () => 
+    app.listen(PORT, "0.0.0.0", () =>
         console.log("Server corriendo en puerto", PORT));
 });
