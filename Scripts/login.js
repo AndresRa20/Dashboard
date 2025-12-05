@@ -139,7 +139,7 @@ if (loginForm) {
             //REDIRECCIÓN PARA VIEWER
             if (json.role === "viewer") {
                 if (origin.includes("5500")) {
-                    window.location.href = "http://127.0.0.1:3000/admin.html";
+                    window.location.href = "http://127.0.0.1:3000/Inicio.html";
                 } else {
                     window.location.href = "/Inicio.html";
                 }
