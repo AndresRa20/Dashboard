@@ -133,7 +133,10 @@ app.post("/api/register", async (req, res) => {
     if (existing.length > 0) { conn.release(); return res.status(400).json({ error: "Correo ya registrado" }); }
 
     const hash = await bcrypt.hash(password, 10);
-    await conn.query("INSERT INTO users (name, lastname, email, password_hash) VALUES (?, ?, ?, ?)", [name || "", lastname || "", email, hash]);
+    await conn.query(
+        "INSERT INTO users (name, lastname, email, password_hash, role) VALUES (?, ?, ?, ?, ?)",
+        [name || "", lastname || "", email, hash, "user"]
+    );
     conn.release();
     res.json({ ok: true, message: "Usuario registrado exitosamente" });
 });

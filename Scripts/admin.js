@@ -119,5 +119,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function logout() {
     localStorage.clear();
-    window.location.href = "/login.html";
+    window.location.href = "/pages/login.html";
+}
+
+function dashboard(){
+    window.location.href = "/pages/Inicio.html";
 }
