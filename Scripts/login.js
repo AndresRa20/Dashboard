@@ -136,7 +136,15 @@ if (loginForm) {
                 }
                 return;
             }
-
+            //REDIRECCIÓN PARA VIEWER
+            if (json.role === "viewer") {
+                if (origin.includes("5500")) {
+                    window.location.href = "http://127.0.0.1:3000/admin.html";
+                } else {
+                    window.location.href = "/Inicio.html";
+                }
+                return;
+            }
             // REDIRECCIÓN PARA USUARIO NORMAL
             if (origin.includes("5500")) {
                 window.location.href = "http://127.0.0.1:3000/Inicio.html";
