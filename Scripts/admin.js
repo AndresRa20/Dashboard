@@ -65,8 +65,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //   CAMBIAR ROL
-    window.cambiarRol = async function(id, currentRole) {
-        const nuevoRol = currentRole.trim().toLowerCase() === "admin" ? "user" : "admin";
+    window.cambiarRol = async function (id, currentRole) {
+        const rolActual = currentRole?.toString().trim().toLowerCase();
+
+        let nuevoRol = "user"; // por defecto
+
+        if (rolActual === "user") nuevoRol = "admin";
+        if (rolActual === "admin") nuevoRol = "user";
+
 
 
         if (!confirm(`¿Cambiar rol a "${nuevoRol}"?`)) return;
@@ -93,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     //   ELIMINAR USUARIO
-    window.eliminarUsuario = async function(id) {
+    window.eliminarUsuario = async function (id) {
         if (!confirm("¿Deseas eliminar este usuario?")) return;
 
         try {

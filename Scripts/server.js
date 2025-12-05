@@ -182,14 +182,19 @@ app.get('/api/admin/users', verifyToken, verifyAdmin, async (req, res) => {
 });
 
 app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) => {
-    const { id, role } = req.body;
+    let { id, role } = req.body;
+
+    // Normalizar
+    role = role.toString().trim().toLowerCase();
+
 
     console.log("Request change-role:", req.body);
 
     // Validaciones básicas
-    if (!id || !role || (role !== "admin" && role !== "user")) {
+    if (!id || !role || !["admin", "user"].includes(role)) {
         return res.status(400).json({ error: "ID o rol inválido" });
     }
+
 
     try {
         // Asegurarse que id sea número
