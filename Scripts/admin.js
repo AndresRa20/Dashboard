@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    // Bloqueo si NO es admin
+    // Permitir entrar SOLO a admin
     if (!token || role !== "admin") {
         alert("Acceso denegado.");
         window.location.href = "/login.html";
@@ -23,22 +23,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     //   CARGAR USUARIOS
+ 
     async function cargarUsuarios() {
         try {
             const res = await fetch(`${API_URL}/api/admin/users`, {
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
+                headers: { "Authorization": "Bearer " + token }
             });
 
             const data = await res.json();
-
             const tbody = document.getElementById("users-body");
             tbody.innerHTML = "";
 
             data.users.forEach(user => {
-                const row = document.createElement("tr");
+                const nextRole =
+                    user.role === "user" ? "viewer" :
+                    user.role === "viewer" ? "admin" :
+                    "user";
 
+                const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${user.id}</td>
                     <td>${user.name}</td>
@@ -47,14 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${user.role}</td>
                     <td>
                         <button class="btn btn-role btn-sm" onclick="cambiarRol(${user.id}, '${user.role}')">
-                            Cambiar Rol
+                            Cambiar a ${nextRole}
                         </button>
                         <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${user.id})">
                             Eliminar
                         </button>
                     </td>
                 `;
-
                 tbody.appendChild(row);
             });
 
@@ -64,18 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+   
     //   CAMBIAR ROL
+
     window.cambiarRol = async function (id, currentRole) {
-        const rolActual = currentRole?.toString().trim().toLowerCase();
+        const rolActual = currentRole.toLowerCase();
 
-        let nuevoRol = "user"; // por defecto
+        let nuevoRol = "user";
+        if (rolActual === "user") nuevoRol = "viewer";
+        else if (rolActual === "viewer") nuevoRol = "admin";
+        else if (rolActual === "admin") nuevoRol = "user";
 
-        if (rolActual === "user") nuevoRol = "admin";
-        if (rolActual === "admin") nuevoRol = "user";
-
-
-
-        if (!confirm(`¿Cambiar rol a "${nuevoRol}"?`)) return;
+        if (!confirm(`¿Cambiar rol de "${rolActual}" a "${nuevoRol}"?`)) return;
 
         try {
             await fetch(`${API_URL}/api/admin/change-role`, {
@@ -84,10 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + token
                 },
-                body: JSON.stringify({
-                    id,
-                    role: nuevoRol
-                })
+                body: JSON.stringify({ id, role: nuevoRol })
             });
 
             cargarUsuarios();
@@ -98,7 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+
     //   ELIMINAR USUARIO
+ 
     window.eliminarUsuario = async function (id) {
         if (!confirm("¿Deseas eliminar este usuario?")) return;
 
@@ -123,13 +123,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
 //   CERRAR SESIÓN
+
 function logout() {
-    localStorage.removeItem("token"); // borra solo el token
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     window.location.href = "/login.html";
 }
 
+
 //   VER DASHBOARD
+
 function dashboard() {
     window.location.href = "/Inicio.html";
 }

@@ -65,6 +65,13 @@ function verifyAdmin(req, res, next) {
     }
     next();
 }
+function verifyViewer(req, res, next) {
+    if (req.user.role !== "viewer" && req.user.role !== "admin") {
+        return res.status(403).json({ error: "No autorizado" });
+    }
+    next();
+}
+
 
 
 // Inicializar BD
@@ -133,10 +140,13 @@ app.post("/api/register", async (req, res) => {
     if (existing.length > 0) { conn.release(); return res.status(400).json({ error: "Correo ya registrado" }); }
 
     const hash = await bcrypt.hash(password, 10);
+    const role = req.body.role || "user"; // Por defecto user
+
     await conn.query(
         "INSERT INTO users (name, lastname, email, password_hash, role) VALUES (?, ?, ?, ?, ?)",
-        [name || "", lastname || "", email, hash, "user"]
+        [name || "", lastname || "", email, hash, role]
     );
+
     conn.release();
     res.json({ ok: true, message: "Usuario registrado exitosamente" });
 });
@@ -193,9 +203,10 @@ app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) =>
     // Convertimos role de manera segura
     role = String(role).trim().toLowerCase();
 
-    if (!["admin", "user"].includes(role)) {
-        return res.status(400).json({ error: "Rol inválido" });
-    }
+    if (!["admin", "user", "viewer"].includes(role)) {
+    return res.status(400).json({ error: "Rol inválido" });
+}
+
 
     const userId = Number(id);
 
@@ -205,7 +216,7 @@ app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) =>
 
     try {
         await pool.query(
-            "UPDATE users SET role = ? WHERE id = ?", 
+            "UPDATE users SET role = ? WHERE id = ?",
             [role, userId]
         );
 
@@ -232,6 +243,14 @@ app.post('/api/admin/delete-user', verifyToken, verifyAdmin, async (req, res) =>
 app.post("/api/logout", (req, res) => res.json({ ok: true, message: "Logout exitoso" }));
 app.get("/api/me", verifyToken, (req, res) => res.json({ ok: true, user: req.user }));
 app.get("/", (req, res) => res.redirect("/login.html"));
+app.get("/api/dashboard", verifyToken, verifyViewer, (req, res) => {
+    res.json({
+        ok: true,
+        message: "Acceso permitido al dashboard",
+        role: req.user.role
+    });
+});
+
 
 // Health check
 app.get("/health", (req, res) => res.status(200).send("OK"));
