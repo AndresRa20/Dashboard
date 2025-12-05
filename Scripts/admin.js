@@ -119,10 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
 //   CERRAR SESIÓN
 function logout() {
     localStorage.removeItem("token"); // borra solo el token
-    window.location.href = "/pages/login.html";
+    window.location.href = "/login.html";
 }
 
 //   VER DASHBOARD
 function dashboard() {
-    window.location.href = "/pages/Inicio.html";
+    window.location.href = "/Inicio.html";
 }
