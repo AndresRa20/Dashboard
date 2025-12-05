@@ -181,13 +181,24 @@ app.get('/api/admin/users', verifyToken, verifyAdmin, async (req, res) => {
 app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) => {
     const { id, role } = req.body;
 
+    console.log("Request change-role:", req.body);
+
+    // Validaciones básicas
+    if (!id || !role || (role !== "admin" && role !== "user")) {
+        return res.status(400).json({ error: "ID o rol inválido" });
+    }
+
     try {
-        await pool.query("UPDATE users SET role = ? WHERE id = ?", [role, id]);
+        // Asegurarse que id sea número
+        const userId = parseInt(id, 10);
+        await pool.query("UPDATE users SET role = ? WHERE id = ?", [role, userId]);
         res.json({ message: "Rol actualizado" });
     } catch (err) {
+        console.error("Error en change-role:", err);
         res.status(500).json({ error: "Error al actualizar rol" });
     }
 });
+
 app.post('/api/admin/delete-user', verifyToken, verifyAdmin, async (req, res) => {
     const { id } = req.body;
 
