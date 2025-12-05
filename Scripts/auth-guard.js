@@ -23,7 +23,7 @@
     }
 
     // 2) Proteger dashboard completo si NO es admin
-    if (ruta.includes("Inicio") && role !== "admin" !== "viewer") {
+    if (ruta.includes("Inicio") && role !== "admin" && role !== "viewer") {
         alert("Acceso restringido: solo administradores.");
         window.location.href = "/login.html";
         return;
