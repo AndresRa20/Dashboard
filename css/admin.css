@@ -10,6 +10,18 @@ body {
     font-family: Arial, sans-serif;
     background: var(--gray-bg);
 }
+header {
+    width: 100%;
+    padding: 15px;
+    background: var(--green);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 header .btn {
     position: absolute;

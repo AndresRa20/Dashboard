@@ -66,7 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //   CAMBIAR ROL
     window.cambiarRol = async function(id, currentRole) {
-        const nuevoRol = currentRole === "admin" ? "user" : "admin";
+        const nuevoRol = currentRole.trim().toLowerCase() === "admin" ? "user" : "admin";
+
 
         if (!confirm(`¿Cambiar rol a "${nuevoRol}"?`)) return;
 
