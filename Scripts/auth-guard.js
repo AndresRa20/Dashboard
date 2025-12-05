@@ -18,7 +18,7 @@
     // Si no es admin -> dashboard normal
     if (window.location.pathname.includes("admin") && role !== "admin") {
         alert("No tienes permisos de administrador.");
-        window.location.href = "/dashboard.html";
+        window.location.href = "/pages/Inicio.html";
         return;
     }
 
