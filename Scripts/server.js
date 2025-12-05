@@ -184,25 +184,35 @@ app.get('/api/admin/users', verifyToken, verifyAdmin, async (req, res) => {
 app.post('/api/admin/change-role', verifyToken, verifyAdmin, async (req, res) => {
     let { id, role } = req.body;
 
-    // Normalizar
-    role = role.toString().trim().toLowerCase();
-
-
     console.log("Request change-role:", req.body);
 
-    // Validaciones básicas
-    if (!id || !role || !["admin", "user"].includes(role)) {
-        return res.status(400).json({ error: "ID o rol inválido" });
+    if (!id || !role) {
+        return res.status(400).json({ error: "Faltan datos" });
     }
 
+    // Convertimos role de manera segura
+    role = String(role).trim().toLowerCase();
+
+    if (!["admin", "user"].includes(role)) {
+        return res.status(400).json({ error: "Rol inválido" });
+    }
+
+    const userId = Number(id);
+
+    if (!userId) {
+        return res.status(400).json({ error: "ID inválido" });
+    }
 
     try {
-        // Asegurarse que id sea número
-        const userId = parseInt(id, 10);
-        await pool.query("UPDATE users SET role = ? WHERE id = ?", [role, userId]);
-        res.json({ message: "Rol actualizado" });
+        await pool.query(
+            "UPDATE users SET role = ? WHERE id = ?", 
+            [role, userId]
+        );
+
+        res.json({ ok: true, message: "Rol actualizado correctamente" });
+
     } catch (err) {
-        console.error("Error en change-role:", err);
+        console.error("ERROR SQL:", err);
         res.status(500).json({ error: "Error al actualizar rol" });
     }
 });
