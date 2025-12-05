@@ -1,70 +1,132 @@
- :root {
-            --green: #006c35;
-            --green-dark: #004d27;
-            --gray-bg: #f3f3f3;
-            --white: #ffffff;
-        }
+:root {
+    --green: #006c35;
+    --green-dark: #004d27;
+    --gray-bg: #f3f3f3;
+    --white: #ffffff;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: var(--gray-bg);
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--gray-bg);
+}
 
-        header {
-            width: 100%;
-            padding: 15px;
-            background: var(--green);
-            color: white;
-            font-size: 22px;
-            font-weight: bold;
-            text-align: center;
-        }
+header {
+    width: 100%;
+    padding: 15px;
+    background: var(--green);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+}
 
-        .container {
-            max-width: 900px;
-            margin: 25px auto;
-            background: var(--white);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
+/* CONTENEDOR BOTONES DEL HEADER */
+header .btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
+/* Cerrar sesión */
+#logout {
+    right: 15px;
+    background: #333;
+}
 
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid #ccc;
-            text-align: left;
-        }
+/* Ver dashboard */
+#dashboard {
+    right: 140px;
+    background: #0d6efd; /* azul bonito */
+}
 
-        th {
-            background: var(--green-dark);
-            color: white;
-        }
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+/* ===== TABLA PROFESIONAL ===== */
 
-        .btn {
-            padding: 7px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            color: white;
-        }
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-        .btn-delete {
-            background: #b91212;
-        }
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 15px;
+}
 
-        .btn-role {
-            background: var(--green);
-        }
+thead tr th {
+    background: var(--green-dark);
+    color: white;
+    font-weight: bold;
+    padding: 14px;
+    text-align: left;
+    border-bottom: 2px solid #00401f;
+}
 
-        #logout {
-            background: #333;
-            float: right;
-        }
+tbody tr td {
+    padding: 14px;
+    border-bottom: 1px solid #e1e1e1;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+/* Hover más elegante */
+tbody tr:hover td {
+    background: #f4f7f4;
+}
+
+/* Primera y última columna más redondeada */
+thead tr th:first-child {
+    border-top-left-radius: 12px;
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 12px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+/* Botones dentro de tabla */
+td .btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-role {
+    background: var(--green);
+}
+
+.btn-role:hover {
+    background: #008f46;
+}
+
+.btn-danger {
+    background: #d42a2a;
+}
+
+.btn-danger:hover {
+    background: #a31e1e;
+}

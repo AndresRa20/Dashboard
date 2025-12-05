@@ -15,22 +15,22 @@
         <button id="dashboard" class="btn">Ver Dashboard</button>
     </header>
 
-    <div class="container">
-        <h2>Usuarios registrados</h2>
+   <div class="table-container">
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="users-body"></tbody>
+    </table>
+</div>
 
-        <table id="usersTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="users-body"></tbody>
-        </table>
-    </div>
 
     <script src="/Scripts/admin.js"></script>
 </body>

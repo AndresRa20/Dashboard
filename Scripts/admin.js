@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    // 🔹 Activar botones
+    document.getElementById("logout").addEventListener("click", logout);
+    document.getElementById("dashboard").addEventListener("click", dashboard);
+
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
@@ -19,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     //   CARGAR USUARIOS
-
     async function cargarUsuarios() {
         try {
             const res = await fetch(`${API_URL}/api/admin/users`, {
@@ -61,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
     //   CAMBIAR ROL
     window.cambiarRol = async function(id, currentRole) {
         const nuevoRol = currentRole === "admin" ? "user" : "admin";
@@ -89,9 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-  
     //   ELIMINAR USUARIO
-  
     window.eliminarUsuario = async function(id) {
         if (!confirm("¿Deseas eliminar este usuario?")) return;
 
@@ -115,13 +115,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-//   CERRAR SESIÓN
 
+//   CERRAR SESIÓN
 function logout() {
-    localStorage.clear();
+    localStorage.removeItem("token"); // borra solo el token
     window.location.href = "/pages/login.html";
 }
 
-function dashboard(){
+//   VER DASHBOARD
+function dashboard() {
     window.location.href = "/pages/Inicio.html";
 }
