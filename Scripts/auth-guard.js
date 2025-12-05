@@ -1,39 +1,43 @@
 /**
  * auth-guard.js
- * Pequeño script que protege páginas del dashboard en el frontend.
- * - Si no hay token JWT en localStorage redirige a `/login.html`.
- * - Si hay token, llama a `/api/me` para validar que el token sigue siendo válido.
- * - En caso de token inválido borra localStorage y redirige al login.
+ * Protege páginas según el rol del usuario.
  */
-(function() {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
 
-    // Si no hay token -> login
+(function () {
+    const token = localStorage.getItem("token");
+    const role  = localStorage.getItem("role");
+
+    // Sin token → login
     if (!token) {
-        window.location.href = '/login.html';
+        window.location.href = "/login.html";
         return;
     }
 
-    // Si no es admin -> dashboard normal
-    if (window.location.pathname.includes("admin") && role !== "admin") {
+    const ruta = window.location.pathname;
+
+    // 1) Proteger admin.html
+    if (ruta.includes("admin") && role !== "admin") {
         alert("No tienes permisos de administrador.");
-        window.location.href = "/pages/Inicio.html";
+        window.location.href = "/Inicio.html";
         return;
     }
 
-    // Validar token en el backend
-    fetch('/api/me', {
+    // 2) Proteger dashboard completo si NO es admin
+    if (ruta.includes("Inicio") && role !== "admin") {
+        alert("Acceso restringido: solo administradores.");
+        window.location.href = "/login.html";
+        return;
+    }
+
+    // Validar token en backend
+    fetch("/api/me", {
         headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: "Bearer " + token
         }
-    })
-    .then(res => {
+    }).then(res => {
         if (!res.ok) {
             localStorage.clear();
-            window.location.href = '/login.html';
+            window.location.href = "/login.html";
         }
-    })
-    .catch(() => {});
+    }).catch(() => {});
 })();
-
