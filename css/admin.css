@@ -111,7 +111,7 @@ td .btn {
     border-radius: 6px;
     font-size: 13px;
     border: none;
-    color: white;
+    color: rgb(8, 8, 8);
     cursor: pointer;
     transition: 0.2s;
 }
@@ -121,7 +121,7 @@ td .btn.delete {
 .btn.delete:hover {
     color: #0f9d58;
     border-color: #0f9d58;
-    background-color: #ffffff;
+    background-color: #454343;
   }
 .btn{
     padding: 8px 16px;
@@ -135,6 +135,6 @@ td .btn.delete {
   }
     .btn:hover {
         background-color: #0f9d58;
-        color: #ffffff;
+        color: #101010;
         border-color: #0f9d58;
     }   
