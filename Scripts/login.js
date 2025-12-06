@@ -3,6 +3,11 @@
  * Detecta automáticamente si está en Live Server (5500) o en producción.
  * Usa rutas relativas en Railway para que el backend responda sin errores.
  */
+// Limpiar campos al cargar la página
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("login-form").reset();
+  }); 
+  
 
 document.addEventListener("DOMContentLoaded", () => {
 

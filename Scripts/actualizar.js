@@ -9,10 +9,6 @@ botonActualizar.addEventListener('click', () => {
 });
 
 document.getElementById('btn-cerrar').addEventListener('click', () => {
-  window.close(); // Intentar cerrar la ventana actual
-}); 
-function closeWindow() {
   localStorage.removeItem("token"); // Limpiar almacenamiento local
-  window.location.href = "/login.html" ; // devuleve al login
-}
-  
+  window.location.href = "/login.html"; // Redirigir al login
+});
