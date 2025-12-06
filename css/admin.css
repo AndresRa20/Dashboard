@@ -115,19 +115,26 @@ td .btn {
     cursor: pointer;
     transition: 0.2s;
 }
-
-.btn-role {
-    background: var(--green);
+td .btn.delete {
+    background: #e74c3c;
 }
-
-.btn-role:hover {
-    background: #008f46;
-}
-
-.btn-danger {
-    background: #d42a2a;
-}
-
-.btn-danger:hover {
-    background: #a31e1e;
-}
+.btn.delete:hover {
+    color: #0f9d58;
+    border-color: #0f9d58;
+    background-color: #ffffff;
+  }
+.btn{
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 4px;
+    transition: all 0.2s ease;
+  }
+    .btn:hover {
+        background-color: #0f9d58;
+        color: #ffffff;
+        border-color: #0f9d58;
+    }   

@@ -62,7 +62,7 @@ body {
 }
 
 .contenido {
-    margin-left: 290px;     /* 🔥 Empuja el contenido para dejar espacio al menú */
+    margin-left: 290px;     /* Empuja el contenido para dejar espacio al menú */
     padding: 40px;
     transition: margin-left 0.3s ease;
 }
@@ -79,3 +79,23 @@ body {
     .contenido { margin-left: 0; }
     .sidebar { left: -270px; position: fixed; transition: left .3s; }
 }
+.boton-actualizar {
+    color: #0f9d58;
+    border-color: #0f9d58;
+    background-color: #ffffff;
+  }
+.boton-actualizar{
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 4px;
+    transition: all 0.2s ease;
+  }
+    .boton-actualizar:hover {
+        background-color: #0f9d58;
+        color: #ffffff;
+        border-color: #0f9d58;
+    }   
