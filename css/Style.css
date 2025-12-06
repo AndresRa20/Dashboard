@@ -79,12 +79,12 @@ body {
     .contenido { margin-left: 0; }
     .sidebar { left: -270px; position: fixed; transition: left .3s; }
 }
-.boton-actualizar {
+.btn {
     color: #0f9d58;
     border-color: #0f9d58;
     background-color: #ffffff;
   }
-.boton-actualizar{
+.btn{
     padding: 8px 16px;
     border: 2px solid transparent;
     border-radius: 6px;
@@ -94,7 +94,7 @@ body {
     margin: 4px;
     transition: all 0.2s ease;
   }
-    .boton-actualizar:hover {
+    .btn:hover {
         background-color: #0f9d58;
         color: #ffffff;
         border-color: #0f9d58;

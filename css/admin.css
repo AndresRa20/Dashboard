@@ -35,10 +35,12 @@ header .btn {
 /* Cerrar sesión */
 #dashboard {
     right: 130px;
+    color: black
 }
 
 #logout {
     right: 20px;
+    color: #101010;
 }
 
 
